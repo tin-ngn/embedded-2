@@ -77,13 +77,8 @@ func main() {
 	Fr1 = make([]float64, N, N)
 	Fi1 = make([]float64, N, N)
 
-	var channel = make(chan int, 2)
-
-	go DIT(Fr1, Fi1, 0, channel)
-	go DIT(Fr2, Fi2, 1, channel)
-
-	<-channel
-	<-channel
+	DIT(Fr1, Fi1, 0)
+	DIT(Fr2, Fi2, 1)
 
 	for p := 0; p < N; p++ {
 		Fr2[p] += Fr1[p]
@@ -112,7 +107,7 @@ func main() {
 }
 
 
-func DIT(Freal1, Fimag1 []float64, b int, x chan int) {
+func DIT(Freal1, Fimag1 []float64, b int) {
 
 	for p := 0; p < N/2-1; p++ {
 		for i := 0; i < N/2-1; i++ {
@@ -132,7 +127,6 @@ func DIT(Freal1, Fimag1 []float64, b int, x chan int) {
 			Fimag1[p+N/2] = Fimag1[p]
 		}
 	}
-	x <- 1
 }
 
 func calcW() {
